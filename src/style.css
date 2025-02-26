@@ -1,0 +1,54 @@
+:root{
+  --coral-orange: #FF7F50;
+  --coral-blue: #04BFEC;
+  --coral-green: #43AA8B;
+  --coral-cyan: #40E0D0;
+
+
+  --purple: #8777B1;
+  --cyan:#50B7B1 ;
+	--orange: #f69000;
+  --blue: #44C0C9;
+  --dark-blue: #152D5A;
+
+  --light-orange: #f2a750;
+	--light-blue: #53b1b1;
+  
+  --purple1: #d391fa;
+  --purple2: #c364fa;
+  --purple3: #a230ed;
+  --purple4: #6b00d7;
+
+  --blue1: #7ce8ff;
+  --blue2: #55d0ff;
+  --blue3: #00acdf;
+  --blue4: #0080bf;
+
+  --black: #2d2d2d;
+	--white: #faffff;
+  
+  --body-font:"Atkinson Hyper";
+}
+
+@font-face{
+  font-family: Atkinson Hyper;
+  src: url("./assets/fonts/AtkinsonHyperlegible-Regular.ttf");
+}
+
+*{
+	box-sizing: 0;
+	margin: 0;
+	padding: 0;
+}
+body{
+	min-height: 100%;
+  overflow-x: hidden;
+  overflow-y: scroll;
+  position:  relative;
+  padding: 0 .7em;
+	color-scheme: light dark;
+  color: var(--black);
+  background-color: var(--white);
+  font-family: var(--body-font);
+	scroll-behavior: smooth;
+}
