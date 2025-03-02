@@ -1,8 +1,9 @@
 <script setup>
 import { onMounted, reactive, ref } from 'vue';
+import Content from './components/Content.vue';
 
-import python from "./data/python.json";
 import awesome from './data/awesome.json';
+import python from "./data/python.json";
 import go from './data/go.json';
 
 import { HorizontalTree } from './helpers/horizontalTree';
@@ -44,13 +45,7 @@ function plotTree(){
     <h2>awesome packages and frameWorks</h2>
     <div class="chart" id="graph"></div>
     <div class="sep"></div>
-    <div class="introduction">
-      <ol>
-      <li v-for="el in awesome">
-        <a class="a-link" v-bind:href="el.url">{{ el.title.trim() }}</a>&nbsp;{{ el.description.trim() }}
-      </li>
-    </ol>
-  </div>
+    <Content />
 
   <div class="sep"></div>
 
@@ -64,27 +59,6 @@ function plotTree(){
 .aw-container h2{
   text-transform: capitalize;
 
-}
-.introduction{
-  width: 88%;
-  font-size: .85em;
-  margin: 0 auto;
-  padding: 1em 2.5em;
-  text-align: left;
-}
-.introduction ol li{
-  line-height: 1.5em;
-}
-.introduction ol li a{
-  position: relative;
-  text-decoration: none;
-  text-transform: capitalize;
-  color: var(--purple3);
-  border-bottom: 2px solid transparent;
-  transition: all .19s ease;
-}
-.introduction ol li a:hover{
-  border-bottom-color: var(--purple3);
 }
 
 .sep{
