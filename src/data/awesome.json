@@ -10,68 +10,68 @@
     "description": "A curated list of awesome Go frameworks, libraries and software "
   },
   {
-    "title": "java \u2620",
+    "title": "java",
     "url": "#graph",
     "description": "A curated list of awesome Java frameworks, libraries and software. "
   },
   {
-    "title": "vue \u2620",
+    "title": "vue",
     "url": "#graph",
     "description": "A curated list of awesome things related to Vue.js "
   },
   {
-    "title": "php \u2620",
+    "title": "php",
     "url": "#graph",
     "description": "A curated list of amazingly awesome PHP libraries, resources and shiny things. "
   },
   {
-    "title": "django \u2620",
-    "url": "https://github.com/rosarior/awesome-django",
+    "title": "django",
+    "url": "#graph",
     "description": "A curated list of awesome Django apps, projects and resources. "
   },
   {
-    "title": "tensorflow \u2620",
+    "title": "tensorflow",
     "url": "#graph",
     "description": "TensorFlow"
   },
   {
-    "title": "docker \u2620",
+    "title": "docker",
     "url": "#graph",
     "description": "A curated list of Docker resources and projects "
   },
   {
-    "title": "sysadmin \u2620",
+    "title": "sysadmin",
     "url": "#graph",
     "description": "A curated list of amazingly awesome open source sysadmin resources inspired by Awesome PHP. "
   },
   {
-    "title": "ML \u2620",
+    "title": "ML",
     "url": "#graph",
     "description": "A curated list of awesome Machine Learning frameworks, libraries and software. "
   },
   {
-    "title": "R \u2620",
-    "url": "https://github.com/qinwf/awesome-R",
+    "title": "R",
+    "url": "#graph",
     "description": "A curated list of awesome R packages, frameworks and software. "
   },
   {
-    "title": " mfornos/awesome-microservices ",
-    "url": "https://github.com/mfornos/awesome-microservices",
+    "title": "microservices",
+    "url": "#graph",
     "description": "A curated list of Microservice Architecture related principles and technologies. "
   },
   {
-    "title": " kud1ing/awesome-rust ",
-    "url": "https://github.com/kud1ing/awesome-rust",
+    "title": "rust",
+    "url": "#graph",
     "description": "A curated list of Rust code and resources. "
   },
   {
-    "title": " h4cc/awesome-elixir ",
-    "url": "https://github.com/h4cc/awesome-elixir",
+    "title": "elixir",
+    "url": "#graph",
     "description": "A curated list of amazingly awesome Elixir and Erlang libraries, resources and shiny things. Updates: "
   },
   {
-    "title": " rshipp/awesome-malware-analysis ",
-    "url": "https://github.com/rshipp/awesome-malware-analysis",
+    "title": "malware analysis",
+    "url": "#graph",
     "description": "A curated list of awesome malware analysis tools and resources "
   }
 ]

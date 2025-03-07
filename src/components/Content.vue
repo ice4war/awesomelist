@@ -7,7 +7,7 @@ import awesome from "../data/awesome.json";
 	<div class="introduction">
 			<div class="a-item" v-for="el in awesome">
 				<a class="a-link" v-bind:href="el.url">{{ el.title.trim() }}</a>
-        {{ el.description.trim() }}
+        - {{ el.description.trim() }}
       </div>
   </div>
 </template>
@@ -27,7 +27,8 @@ import awesome from "../data/awesome.json";
   padding: 0.3em 1em;
   margin-bottom: 1em;
   margin-right: 1em;
-  max-width: 10em;
+  max-width: 11.5em;
+  min-width: 11.5em;
   overflow: hidden;
 }
 
@@ -48,9 +49,8 @@ import awesome from "../data/awesome.json";
   text-decoration: none;
   text-transform: capitalize;
   color: var(--blue4);
-  transition: all .19s ease;
 }
 .a-item a:hover{
-  background: var(--blue1);
+  background: var(--blue2);
 }
 </style>

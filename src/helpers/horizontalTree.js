@@ -2,20 +2,20 @@ import * as d3 from "d3";
 
 export class HorizontalTree {
   constructor(data, element, config) {
-    this.width = 900;
     this.marginTop = 10;
     this.marginRight = 10;
     this.marginBottom = 10;
-    this.marginLeft = 150;
+    this.marginLeft = 50;
 
     this.config = config ? config : HorizontalTree.defaultConfig();
+    this.width = this.config.width;
     this.element = element;
     this.data = data;
-    this.root = d3.hierarchy(this.data);
-    const dx = 25;
+    this.root = d3.hierarchy(data);
+    const dx = 17;
     const dy = (this.width - this.marginright - this.marginLeft) / (1 + this.root.height);
 
-    this.tree = d3.tree().nodeSize([dx, dy]).separation((a, b) => (a.parent == b.parent ? 4 : 3) / a.depth);
+    this.tree = d3.cluster().nodeSize([dx, dy]).separation((a, b) => (a.parent == b.parent ? 5: 4) / a.depth);
     this.diagonal = d3.linkHorizontal().x(d => d.y * 1.2).y(d => d.x);
 
 
@@ -23,9 +23,8 @@ export class HorizontalTree {
       .attr('width', this.width)
       .attr('height', dx * 2)
       .attr('viewBox', [-this.marginLeft, -this.marginTop, this.width, this.height])
-      .attr('style', 'width: 100%; height: auto; height: intrinsic;')
+      .attr('style', 'width: 100%;height:intrinsic;');
 
-    this.graph.node().graph = this;
 
     this.gLink = this.graph.append("g")
       .attr('fill', 'none')
@@ -44,7 +43,7 @@ export class HorizontalTree {
       .attr('x1', '0%')
       .attr('y1', '0%')
       .attr('x2', '100%')
-      .attr('y2', '0')
+      .attr('y2', '0%')
       .attr('spreadMethod', 'reflect');
 
     hoverGradient.selectAll('.hover-stop')
@@ -59,7 +58,7 @@ export class HorizontalTree {
     this.root.descendants().forEach((d, i) => {
       d.id = i;
       d._children = d.children;
-      if (d.depth >= 1) d.children = null;
+      // if (d.depth >= 1) d.children = null;
     })
     this.update(null, this.root);
   }
@@ -67,12 +66,12 @@ export class HorizontalTree {
     const identifier = this.element;
     const config = this.config;
     const nodeSelector = (d) => {
-      const id = (d.data.name || d.data.title).split(" ").join("_");
+      const id = (d.data.name || d.data.title).split(/[\s\,\.\@\/\(\)\-\+*:\&]/).join("");
       return id + "_" + d.id;
     }
     const linkSelector = (source, target) => {
-      const s = (source.data.title || source.data.name).split(" ").join("_");
-      const t = (target.data.title || target.data.name).split(" ").join("_");
+      const s = (source.data.title || source.data.name).split(/[\s\,\.\@\/\(\)\-\+\*:\&]/).join("");
+      const t = (target.data.title || target.data.name).split(/[\s\,\.\@\/\(\)\-\+\*:\&]/).join("");
       return `${s}_${t}`;
     }
     const nodes = this.root.descendants().reverse();
@@ -81,8 +80,9 @@ export class HorizontalTree {
     this.tree(this.root);
     let left = this.root;
     let right = this.root;
-    nodes.forEach(d => (d.y = d.depth * 100));
-
+    nodes.forEach(d => {
+      d.y = d.depth * 80;
+    });
     this.root.eachBefore(node => {
       if (node.x < left.x) left = node;
       if (node.x > right.x) right = node;
@@ -133,14 +133,14 @@ export class HorizontalTree {
       .attr('paint-order', 'stroke')
       .attr('stroke-width', config.textStrokeWidth)
       .text(d => d.data.name || d.data.title)
-      .on('mouseover', function (event, d) {
+
+    nodeEnter.on('mouseover', function(event, d) {
         //Link modification
         d3.selectAll(`.${identifier}_link`).attr('stroke-opacity', 0.2)
         // Label modification
         d3.selectAll(`.${identifier}_text`).attr('fill-opacity', 0.2)
         // Node modification
         d3.selectAll(`.${identifier}_circle`).attr('fill-opacity', 0.2)
-
         while (d.parent) {
           if (d.parent != null) {
             // Labels
@@ -151,17 +151,20 @@ export class HorizontalTree {
             // Nodes
             d3.select(`.${nodeSelector(d)}_circle`)
               .attr('fill-opacity', 0.7)
+              .attr('stroke',d => d._children ? config.parentNodeColor : config.childNodeColor)
+              .attr('stroke-width',10)
+              .attr('stroke-opacity',.3)
               .attr("r", config.nodeRadius + 1);
 
             // Links
             d3.select(`.${linkSelector(d.parent, d)}`)
               .attr('stroke', 'url(#hover-animate)')
               .attr('stroke-opacity', 1);
-          }//IF
+          } // IF
           d = d.parent;
-        }// while
+        } // while
       })
-      .on('mouseleave', function (event, d) {
+      .on('mouseleave', function(event, d) {
         // Link reset
         d3.selectAll(`.${identifier}_link`)
           .attr('stroke-opacity', config.lineStrokeOpacity)
@@ -169,6 +172,7 @@ export class HorizontalTree {
         // Node reset
         d3.selectAll(`.${identifier}_circle`)
           .attr('fill-opacity', config.nodeFillOpacity)
+          .attr('stroke','none')
           .attr("r", config.nodeRadius);
         // Label reset
         d3.selectAll(`.${identifier}_text`)
@@ -179,12 +183,12 @@ export class HorizontalTree {
 
 
     // node Update
-    const nodeUpdate = node.merge(nodeEnter).transition(transition)
+    node.merge(nodeEnter).transition(transition)
       .attr("transform", d => `translate(${d.y * 1.2},${d.x})`)
       .attr('fill-opacity', 1)
       .attr('stroke-opacity', 1);
 
-    const nodeExit = node.exit().transition(transition).remove()
+    node.exit().transition(transition).remove()
       .attr("transform", d => `translate(${source.y},${source.x})`)
       .attr('fill-opacity', 0)
       .attr('stroke-opacity', 0);
@@ -195,8 +199,14 @@ export class HorizontalTree {
     const linkEnter = link.enter().append("path").attr('id', 'graph-link')
       .attr('class', d => `${linkSelector(d.source, d.target)} ${identifier}_link`)
       .attr("d", d => {
-        const o = { x: source.x0, y: source.y0 };
-        return this.diagonal({ source: o, target: o });
+        const o = {
+          x: source.x0,
+          y: source.y0
+        };
+        return this.diagonal({
+          source: o,
+          target: o
+        });
       });
     link.merge(linkEnter).transition(transition)
       .attr("d", this.diagonal);
@@ -204,8 +214,14 @@ export class HorizontalTree {
     // Transition exiting nodes to the parent's new position.
     link.exit().transition(transition).remove()
       .attr("d", d => {
-        const o = { x: source.x, y: source.y };
-        return this.diagonal({ source: o, target: o });
+        const o = {
+          x: source.x,
+          y: source.y
+        };
+        return this.diagonal({
+          source: o,
+          target: o
+        });
       });
     this.root.eachBefore(d => {
       d.x0 = d.x;
@@ -224,15 +240,15 @@ export class HorizontalTree {
   static defaultConfig() {
     let config = {
       nodeRadius: 4,
-
-      parentNodeColor: "#FA3B01",
-      childNodeColor: "#5a5",
+      width: 900,
+      parentNodeColor: "#a230ed",
+      childNodeColor: "#00acdf",
       nodeStrokeWidth: 0,
       nodeStrokeColor: 'none',
       nodeFillOpacity: 0.6,
 
       lineStrokeColor: "#afafaf",
-      lineStrokeOpacity: .6,
+      lineStrokeOpacity: .3,
       lineStrokeWidth: 2,
 
       textStrokeColor: "none",
